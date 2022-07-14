@@ -1,0 +1,99 @@
+---
+title: "Assignment 2"
+subtitle: "Deconstruct, Reconstruct Web Report"
+author: "AKSHAT VIJAYVARGIA / S3826627"
+output: html_document
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+# Do not change these settings!
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+### {.tabset} 
+
+Click the **Original**, **Code** and **Reconstruction** tabs to read about the issues and how they were fixed. 
+
+#### ORIGINAL
+
+<br>
+<center>
+<img src="C:\Users\61422\Desktop" width="80%">
+</center>
+<center>*Source: THINKPROGRESS (2014).*</center>
+<br>
+
+**OBJECTIVE**
+The pictorial is from a report named "Mapping Paid Paternity Leave" published by THINKPROGRESS.ORG in July 2014. The objective is to make the visualization easy for our viewer to understand and to compare the guaranteed paid paternity leaves in different countries from the USA.
+
+The target audience of this visualization is people of almost every country, especially couples going through a gestation period of 9 months and anyone who is interested in understanding different policies of different countries.
+
+The visualization chosen had the following three main issues:
+* In the pictorial, every country has its own color except Kenya, Venezuela, Australia, Denmark, and the UK are in orange, and the Bahamas and Singapore are in maroon. To make the visualization easier to understand than we have to come up with a different color scheme for different countries to avoid confusion. 
+
+* The information is not very clear or precise to draw comparisons between countries in this spiral graph. For example, if we want the contrast between the USA and Finland or Australia. This could bring a wrong interpretation in the viewer's mind regarding biases towards some countries.
+
+* The use of spiral graphs tends to undermine the interest of the reader/viewer as the details tend to clutter in the middle. The spiral charts look cool and beautiful but are very weak analytically. With the increase in data ( here countries) the existing data will litter in the center of the graph, which will make the pictorial untidy.
+
+**TARGET AUDIENCE**
+The target audience of this visualization are people of almost every countries, especially couples going through gestation period of 9 months and anyone who is interested in understanding different policies of different countries.
+
+**REFERENCE**
+* THINKPROGRESS (2014). *U.S. Paid Family Leave Versus The Rest Of The World*. Retrieved September 15, 2020 from THINKPROGRESS website: https://archive.thinkprogress.org/u-s-paid-family-leave-versus-the-rest-of-the-world-in-2-disturbing-charts-365324eeba45/
+
+* OECD.STAT (2016). *Length of maternity leave, parental leave, and paid father-specific leave*. Retrieved September 15, 2020 from OECD.STAT website: https://stats.oecd.org/Index.aspx?QueryId=54760
+
+#### CODE
+
+The following code was used to fix the issues identified in the original.
+
+```{r}
+# Load required packages
+
+library(ggplot2)
+library(readr)
+library(magrittr)
+library(tidyr)
+library(gridExtra)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(RColorBrewer)
+
+# Importing and reconstructing the data
+'I have already processed the data in Excel.'
+
+
+library(readr)
+DATA1 <- read_csv("C:/Users/61422/Desktop/DV ASSIGNMENT/GENDER_EMP.csv")
+str(DATA1)
+
+PLOT1 <- ggplot(DATA1, aes(x = reorder( COUNTRY, -LEAVES), y = LEAVES))
+
+FINAL <- PLOT1 + geom_bar(stat="identity" ,width = .5, fill="red") +
+  coord_flip() + 
+  geom_text(aes(label=LEAVES, hjust=-0.4, vjust=0.4), size = 4) + 
+    labs(y = "ALLOWED PAID PATERNITY LEAVES IN WEEKS", 
+         x = "COUNTRIES") + 
+  scale_y_continuous(limits=c(0,60)) + 
+  theme(plot.title = element_text(size = 9, face = "bold"),
+        plot.subtitle = element_text(size = 6.5),
+        plot.caption = element_text(size = 6),
+        axis.text.y = element_text(size = 8, colour = "black"),
+        axis.text.x = element_text(size = 7))+ 
+  labs(title = "HOW MUCH TIME DO OTHER COUNTRIES GUARANTEE PAID PATERNITY LEAVE COMPARED TO THE U.S.? ", subtitle =" The most generous countries for paternity paid leave are Japan, South Korea and Portugal, unlike U.S., Canada and many more.",
+caption = "Sources: OECD.Stat - https://stats.oecd.org/index.aspx?queryid=54760, The Guardian - https://www.theguardian.com/us-news/2020/jan/29/paternity-leave-us-policy")
+
+```
+
+**DATA REFERENCE*
+* OECD.STAT (2016). *Length of maternity leave, parental leave, and paid father-specific leave*. Retrieved September 15, 2020 from OECD.STAT website: https://stats.oecd.org/Index.aspx?QueryId=54760
+
+#### RECONSTRUCTION
+
+The following plot fixes the main issues in the original.
+
+```{r fig.align="center", echo = FALSE}
+FINAL
+```
